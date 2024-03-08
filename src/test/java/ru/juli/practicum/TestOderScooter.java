@@ -1,5 +1,6 @@
 package ru.juli.practicum;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,8 +17,15 @@ import ru.juli.practicum.pageoption.PageWhoIsScooter;
 
 import java.time.Duration;
 
+import static ru.juli.practicum.MyConstants.SCOOTER_URL;
+
 public class TestOderScooter {
     WebDriver driver;
+    private String firstName = "Юля";
+    private String lastName = "Тестовая";
+    private String orderAddress = "Москва ул Тестовая 13";
+    private String phoneNumber = "89161234567";
+    private String orderDate = "29.03.2023";
 
     @Before
     public void setup_01() {
@@ -27,44 +35,34 @@ public class TestOderScooter {
 
     @Test
     public void OrderTest_01() {
-
-        driver.get("http://qa-scooter.praktikum-services.ru");
-        // объект класса домашней страницы
-        HomePageScooter objHomePage = new HomePageScooter(driver);
-        objHomePage.clickButtonOrderUp(); // Нажать кнопку вверху справа Заказать
+        WebDriver driver = new ChromeDriver();
+        WebDriverManager.chromedriver().setup();   // Создание экземпляра ChromeDriver
+        driver.get(SCOOTER_URL);
+        HomePageScooter objHomePage = new HomePageScooter(driver);  // объект класса домашней страницы
         PageWhoIsScooter objPageWhoIsScooter = new PageWhoIsScooter(driver);  // создать объект класса страницы Для кого
-
-        objPageWhoIsScooter.fillFirstName("Юля"); // заполнить поле имя
-        objPageWhoIsScooter.fillLastName("Тестовая"); // заполнить поле фамилия
-        objPageWhoIsScooter.fillOrderAddress("Москва ул Тестовая 13"); // заполнить поле адрес
+        PageAboutRent objPageAboutRent = new PageAboutRent(driver);
+        objHomePage.clickButtonOrderUp(); // Нажать кнопку вверху справа Заказать
+        objPageWhoIsScooter.fillFirstName(firstName); // заполнить поле имя
+        objPageWhoIsScooter.fillLastName(lastName); // заполнить поле фамилия
+        objPageWhoIsScooter.fillOrderAddress(orderAddress); // заполнить поле адрес
         objPageWhoIsScooter.clickStationUnderground(); // клик в поле станции метро
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("select-search__select"))); // ожидание раскрывающегося списка станций метро
-
         objPageWhoIsScooter.clickListOfStationUnderground(1); // выбор станции из списка
-        objPageWhoIsScooter.fillTelephoneNumber("89161234567"); // заполнение поля телефон
+        objPageWhoIsScooter.fillTelephoneNumber(phoneNumber); // заполнение поля телефон
         objPageWhoIsScooter.clickButtonNext(); // нажатие далее
 
-        PageAboutRent objPageAboutRent = new PageAboutRent(driver);
         objPageAboutRent.clickOrderPeriod();
-
         WebDriverWait waitCalendar = new WebDriverWait(driver, Duration.ofSeconds(5));
         WebElement elementCalendar = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("Dropdown-placeholder")));    // ожидание раскрывающегося списка календаря
-
-        objPageAboutRent.chooseOrderPeriod(5); // выбор даты (число)
+        objPageAboutRent.chooseOrderPeriod(orderDate); // выбор даты оставки
 
         objPageAboutRent.clickRentalPeriod();
-
         WebDriverWait waitPeriodList = new WebDriverWait(driver, Duration.ofSeconds(5));
         WebElement elementPeriodList = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("Dropdown-placeholder"))); //ожидание раскрывающегося списка срока аренды
         objPageAboutRent.chooseRentalPeriod(); // выбрать значение срока аренды из списка
         objPageAboutRent.clickButtonOrder(); // нажать кнопку Заказать
-
         WebDriverWait waitOrder = new WebDriverWait(driver, Duration.ofSeconds(5));
         WebElement elementOrder = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("Order_ModalHeader__3FDaJ")));     //ожидание открытия окна подтверждения заказа
         objPageAboutRent.clickButtonYes(); // нажать кнопку Да
-
         WebDriverWait waitOrderFinal = new WebDriverWait(driver, Duration.ofSeconds(5));
         WebElement elementOrderFinal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("Order_Modal__YZ-d3"))); //ожидание открытия окна Заказ оформлен
 
@@ -113,7 +111,7 @@ public class TestOderScooter {
         WebDriverWait waitCalendar = new WebDriverWait(driver, Duration.ofSeconds(5));
         WebElement elementCalendar = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("Dropdown-placeholder")));   // ожидание раскрывающегося списка календаря
 
-        objPageAboutRent.chooseOrderPeriod(5); // выбор даты (число)
+        objPageAboutRent.chooseOrderPeriod(orderDate); // выбор даты (число)
 
         objPageAboutRent.clickRentalPeriod();
 

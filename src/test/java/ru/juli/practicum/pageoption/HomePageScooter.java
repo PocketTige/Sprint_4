@@ -4,48 +4,61 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import java.util.ArrayList;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 //класс для домашней страницы
 public class HomePageScooter {
     private WebDriver driver;
 
     // Локаторы
-    private By faqName = By.className("accordion"); // локатор списка вопросов
+    private By faqName = By.className("accordion"); // локатор Заголовка списка вопросов
     private By buttonCookie = By.className("App_CookieButton__3cvqF"); // локатор кнопки принять куки
-    private By listFaq = By.xpath("//div[contains(@id,'accordion__heading')]"); // локатор массива заголовков вопросов
+    private By question = By.xpath(".//div[contains(@)id,'accordion__heading-')]"); // локатор стрелочки-вопроса всех  id="accordion__heading-0"
     private By buttonOrderUp = By.className("Button_Button__ra12g"); // локатор верхней кнопки заказать
+    private By buttonOrderDown = By.className("Button_Button__ra12g Button_UltraBig__UU3Lp"); // локатор нижней кнопки заказать
+
     // конструктор класса
     public HomePageScooter(WebDriver driver) {
         this.driver = driver; // Инициализировали в нём поле driver
     }
+
     // методы
     // прокрутить вниз до вопросов
     public void scrollToFaq() {
         WebElement element = driver.findElement(faqName);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);
     }
+
     // нажатие на кнопку приняти куки
     public void clickButtonCookie() {
         driver.findElement(buttonCookie).click();
     }
-    public ArrayList<WebElement> findListFaq() {
-        return (ArrayList) driver.findElements(listFaq);
 
+    // нашли стрелку и нажать на вопрос
+    public void clickQuestion(String question_0) {
+        driver.findElement(By.id(question_0)).click();
     }
-    // нажате на стрелочки
-    public void clickHeadingFaq(WebElement element) throws InterruptedException {
-        element.click();
-        Thread.sleep(1000);
+
+    // получение текста вопроса
+    public String getTextQuestion(String expectedQuestion) {
+        new WebDriverWait(driver, 3).until(ExpectedConditions.visibilityOfElementLocated(By.id(expectedQuestion))); // ожидаем когда элемент будет виден
+        String actualQuestion = driver.findElement(By.id(expectedQuestion)).getText();
+        return actualQuestion;
     }
-    // проверка видимости текста ответа
-    public String  isVisible(WebElement element) {
-        return element.getAttribute("aria-expanded");
+        // + ожидание получить текст из ответа
+        public String getTextResponse(String expectedResponse) {
+        new WebDriverWait(driver, 3).until(ExpectedConditions.visibilityOfElementLocated(By.id(expectedResponse))); // ожидаем когда элемент с ответом будет виден
+        String actualResponse = driver.findElement(By.id(expectedResponse)).getText();
+        return actualResponse;
     }
-    // нажатие на вернюю кнопку заказать
+    // на верхнюю кнопку заказать
     public void clickButtonOrderUp() {
         driver.findElement(buttonOrderUp).click();
+    }
+    // на нижнюю кнопку заказать
+    public void clickButtonOrderDown() {
+        driver.findElement(buttonOrderDown).click();
     }
 }
 
