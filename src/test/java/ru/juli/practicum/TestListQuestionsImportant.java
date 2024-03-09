@@ -1,6 +1,8 @@
 package ru.juli.practicum;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -20,11 +22,11 @@ public class TestListQuestionsImportant {
     private final String expectedQuestion;
     private final String expectedResponse;
 
-    public TestListQuestionsImportant(String expectedQuestion, String question, String expectedResponse, String response, boolean isMatches) {
-        this.expectedQuestion = expectedQuestion; // локатор вопроса
-        this.question = question; // ожидаемый вопрос
-        this.expectedResponse = expectedResponse; // локатор ответа
-        this.response = response; // ожидаемый ответ
+    public TestListQuestionsImportant(String question, String expectedQuestion, String response, String expectedResponse, boolean isMatches) {
+        this.question = question; //  вопрос
+        this.expectedQuestion = expectedQuestion; // ожидаемый вопрос
+        this.response = response; //  ответ
+        this.expectedResponse = expectedResponse; // ожидаемый ответ
         this.isMatches = isMatches;
     }
 
@@ -50,10 +52,10 @@ public class TestListQuestionsImportant {
         HomePageScooter objHomePage = new HomePageScooter(driver);  // объект класса домашней страницы
         objHomePage.clickButtonCookie(); // нажимаем принять куки
         objHomePage.scrollToFaq();       //найти заголовок списка и прокрутить до списка
-        objHomePage.clickQuestion(expectedQuestion); // найти и кликнуть по кнопке вопроса
+        objHomePage.clickQuestion(question); // найти и кликнуть по кнопке вопроса
 
-        assertEquals(question, objHomePage.getTextQuestion(expectedQuestion)); // проверка текста вопроса
-        assertEquals(response, objHomePage.getTextResponse(expectedResponse)); // ожидание видимости ответа и получить его текст
+        assertEquals(expectedQuestion, objHomePage.getTextQuestion(question)); // проверка текста вопроса
+        assertEquals(expectedResponse, objHomePage.getTextResponse(response)); // ожидание видимости ответа и получить его текст
 
         driver.quit();
     }
@@ -79,10 +81,10 @@ public void setQuestionTest_02() throws InterruptedException {
     HomePageScooter objHomePage = new HomePageScooter(driver);  // объект класса домашней страницы
     objHomePage.clickButtonCookie(); // нажимаем принять куки
     objHomePage.scrollToFaq();       //найти заголовок списка и прокрутить до списка
-    objHomePage.clickQuestion(expectedQuestion); // найти и кликнуть по кнопке вопроса
+    objHomePage.clickQuestion(question); // найти и кликнуть по кнопке вопроса
 
-    assertEquals(question, objHomePage.getTextQuestion(expectedQuestion)); // проверка текста вопроса
-    assertEquals(response, objHomePage.getTextResponse(expectedResponse)); // ожидание видимости ответа и получить его текст
+    assertEquals(expectedQuestion, objHomePage.getTextQuestion(question)); // проверка текста вопроса
+    assertEquals(expectedResponse, objHomePage.getTextResponse(response)); // ожидание видимости ответа и получить его текст
 
     driver.quit();
 }

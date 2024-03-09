@@ -41,23 +41,26 @@ public class HomePageScooter {
     }
 
     // получение текста вопроса
-    public String getTextQuestion(String expectedQuestion) {
-        new WebDriverWait(driver, 3).until(ExpectedConditions.visibilityOfElementLocated(By.id(expectedQuestion))); // ожидаем когда элемент будет виден
-        String actualQuestion = driver.findElement(By.id(expectedQuestion)).getText();
+    public String getTextQuestion(String question) {
+        new WebDriverWait(driver, 3).until(ExpectedConditions.visibilityOfElementLocated(By.id(question))); // ожидаем когда элемент будет виден
+        String actualQuestion = driver.findElement(By.id(question)).getText();
         return actualQuestion;
     }
         // + ожидание получить текст из ответа
-        public String getTextResponse(String expectedResponse) {
-        new WebDriverWait(driver, 3).until(ExpectedConditions.visibilityOfElementLocated(By.id(expectedResponse))); // ожидаем когда элемент с ответом будет виден
-        String actualResponse = driver.findElement(By.id(expectedResponse)).getText();
+        public String getTextResponse(String response) {
+        new WebDriverWait(driver, 3).until(ExpectedConditions.visibilityOfElementLocated(By.id(response))); // ожидаем когда элемент с ответом будет виден
+        String actualResponse = driver.findElement(By.id(response)).getText();
         return actualResponse;
     }
     // на верхнюю кнопку заказать
     public void clickButtonOrderUp() {
         driver.findElement(buttonOrderUp).click();
     }
-    // на нижнюю кнопку заказать
+
+    // прокрутить вниз на нижнюю кнопку заказать
     public void clickButtonOrderDown() {
+        WebElement element = driver.findElement(buttonOrderDown);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);
         driver.findElement(buttonOrderDown).click();
     }
 }

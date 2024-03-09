@@ -3,6 +3,10 @@ package ru.juli.practicum.pageoption;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 // класс страницы Для кого самокат
 public class PageWhoIsScooter {
@@ -23,36 +27,44 @@ public class PageWhoIsScooter {
     }
 
     // методы
-    public void fillFirstName(String name) {
-        driver.findElement(fieldFirstName).sendKeys(name);
-    }
     // заполняем поле имя
-
+    public void fillFirstName(String firstName) {
+        driver.findElement(fieldFirstName).sendKeys(firstName);
+    }
+    // заполняем поле Фамилия
     public void fillLastName(String lastName) {
         driver.findElement(fieldLastName).sendKeys(lastName);
     }
-    // заполняем поле Фамилия
-
-    public void fillOrderAddress(String adress) {
-        driver.findElement(fieldOrderAddress).sendKeys(adress);
+    // заполняем поле Адрес
+    public void fillOrderAddress(String orderAddress) {
+        driver.findElement(fieldOrderAddress).sendKeys(orderAddress);
     }
+    // выбор станции метро
+    //1 клик по полю
     public void clickStationUnderground() {
         driver.findElement(fieldStationUnderground).click();
     }
-
-    // выбор станции метро
-    //1 клик по полю
+    //2 выбор варианта из списка
     public void clickListOfStationUnderground(int index) {
         this.index = index;
         driver.findElement(listOfStationUnderground).click();
     }
-    //2 выбор варианта из списка
-
+    // Заполняем поле телефон
     public void fillTelephoneNumber(String phoneNumber) {
         driver.findElement(fieldTelephoneNumber).sendKeys(phoneNumber);
     }
-    // заполнение телефона
+    // метод поиска и нажатия на кнопку Далее
     public void clickButtonNext() {
-        driver.findElement(buttonNext).click(); // метод поиска и нажатия на кнопку Далее
+        driver.findElement(buttonNext).click();
+    }
+    // Шаг Заполнения формы Для кого самокат
+    public void setWhoIsScooter(String firstName, String lastName, String orderAddress, int index, String phoneNumber) {
+        fillFirstName(firstName);
+        fillLastName(lastName);
+        fillOrderAddress(orderAddress);
+        clickStationUnderground();
+        clickListOfStationUnderground(index);
+        fillTelephoneNumber(phoneNumber);
+        clickButtonNext();
     }
 }
